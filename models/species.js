@@ -10,7 +10,7 @@ const speciesSchema = new Schema({
 speciesSchema
   .virtual('url')
   .get(function() {
-    return `/species/${ this.name }`;
+    return `/inventory/species/${ this.name }`;
   });
 
 // Export model

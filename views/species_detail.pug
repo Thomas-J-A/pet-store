@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  //- //- Get a reference to the species sub-document 
+  //- //- in order to use the url virtual for the add new entry link
+  //- - const species = animals[0].species;
+  h1= title
+  a(href=`${ species.url }/create`) Add New Entry
+
+  if animals
+    .animals_list
+      each animal of animals
+        .animals_list_item
+          h1= animal.name
+          a(href=animal.url) View More
+  
+  else
+    p There are no #{ species.name } to display

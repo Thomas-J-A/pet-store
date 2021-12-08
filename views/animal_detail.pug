@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  p Name: #{ animal.name }
+  p Species: #{ animal.species.name }
+  p Gender: #{ animal.gender }
+  p Age: #{ animal.age }
+  p About: #{ animal.description }
+  p Price: £#{ animal.price }
+
+  a(href=`${ animal.url }/update`) Update
+  a(href=`${ animal.url }/delete`) Delete

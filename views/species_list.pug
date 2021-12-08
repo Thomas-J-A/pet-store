@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1 Species
+  a(href="/inventory/species/create") Add New Entry
+
+  .species_list
+    each species_instance of species
+      .species_list_item
+        h1= species_instance.name
+        a(href=`${ species_instance.url }/update`) Update
+        a(href=`${ species_instance.url }/delete`) Delete
+        p= species_instance.description
+        a(href=species_instance.url) View

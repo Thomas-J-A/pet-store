@@ -3,8 +3,9 @@ const path = require('path');
 
 // Import routes
 const indexRouter = require('./routes/index');
+const inventoryRouter = require('./routes/inventory');
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 // Set up MongoDB connection
@@ -21,7 +22,8 @@ app.set('view engine', 'pug');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Initialize routes into request chain
+// Add routes to middleware stack
 app.use('/', indexRouter);
+app.use('/inventory', inventoryRouter);
 
 app.listen(PORT, () => console.log(`Server listening for requests at port ${ PORT }`));

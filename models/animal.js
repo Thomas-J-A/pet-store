@@ -7,14 +7,14 @@ const animalSchema = new Schema({
   gender: String,
   age: Number,
   description: String,
-  species: Schema.Types.ObjectId,
+  species: { type: Schema.Types.ObjectId, ref: 'Species' },
   price: Number,
 });
 
 animalSchema
   .virtual('url')
   .get(function() {
-    return `/species/${ this.species.name }/${ this.id }`;
+    return `/inventory/species/${ this.species.name }/${ this.id }`;
   });
 
 // Export model

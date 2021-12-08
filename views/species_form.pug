@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method="POST", action="")
+    label(for="name") Name:
+    input#name(type="text", placeholder="Horse, Leopard, Donkey...", name="name", value=(species === undefined ? "" : species.name ))
+    label(for="description") Description:
+    textarea#description(name="description") #{ species === undefined ? "" : species.description }
+    button(type="submit") Add
+
+  if errors
+    ul
+      each error in errors
+        li!= error.msg
