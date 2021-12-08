@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1= title
+  
+  form#animal_form(method="POST", action="")
+    label(for="animal_form_name") Name:
+    input#animal_form_name(type="text", placeholder="Mick, Randolf, Lucy...", name="name", value=(animal === undefined ? "" : animal.name))
+    label(for="animal_form_gender") Gender:
+    input#animal_form_gender(type="text", placeholder="Male, Female, Non-Binary...", name="gender", value=(animal === undefined ? "" : animal.gender))
+    label(for="animal_form_age") Age:
+    input#animal_form_age(type="number", name="age", value=(animal === undefined ? 10 : animal.age))
+    label(for="animal_form_description") Description:
+    textarea#animal_form_description(name="description") #{ animal === undefined ? "" : animal.description }
+    label(for="animal_form_price") Price:
+    input#animal_form_price(type="number", name="price", value=(animal === undefined ? 100 : animal.price))
+    button(type="submit") Add
+
+  if errors
+    ul
+      each error in errors
+        li!= error.msg

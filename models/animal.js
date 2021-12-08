@@ -7,8 +7,8 @@ const animalSchema = new Schema({
   gender: String,
   age: Number,
   description: String,
-  species: { type: Schema.Types.ObjectId, ref: 'Species' },
   price: Number,
+  species: { type: Schema.Types.ObjectId, ref: 'Species' },
 });
 
 animalSchema

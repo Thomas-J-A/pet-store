@@ -3,8 +3,7 @@ const Animal = require('../models/animal');
 
 const async = require('async');
 const { body, validationResult } = require('express-validator');
-// const capitalize = require('../utilities/capitalize');
-const species = require('../models/species');
+// const species = require('../models/species');
 
 exports.species_list = (req, res, next) => {
   Species.find((err, species) => {
