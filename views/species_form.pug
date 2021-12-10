@@ -8,7 +8,7 @@ block content
     input#name(type="text", placeholder="Horse, Leopard, Donkey...", name="name", value=(species === undefined ? "" : species.name ))
     label(for="description") Description:
     textarea#description(name="description") #{ species === undefined ? "" : species.description }
-    button(type="submit") Add
+    button(type="submit") #{ title === 'Update Entry' ? 'Update' : 'Add' }
 
   if errors
     ul

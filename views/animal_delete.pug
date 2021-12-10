@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  h3 Are you sure you want to remove the entry for #{ animal.name } the #{ animal.species.name }?
+  
+  form(method="POST", action="")
+    button(type="submit") Yes

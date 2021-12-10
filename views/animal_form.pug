@@ -14,7 +14,7 @@ block content
     textarea#animal_form_description(name="description") #{ animal === undefined ? "" : animal.description }
     label(for="animal_form_price") Price:
     input#animal_form_price(type="number", name="price", value=(animal === undefined ? 100 : animal.price))
-    button(type="submit") Add
+    button(type="submit") #{ title === 'Update Entry' ? 'Update' : 'Add' }
 
   if errors
     ul

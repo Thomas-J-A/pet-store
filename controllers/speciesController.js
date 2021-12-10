@@ -88,18 +88,80 @@ exports.species_create_post = [
   },
 ];
 
-exports.species_update_get = (req, res) => {
-  res.send(`NOT IMPLEMENTED: Species update GET for ${ req.params.species_name }`);
+exports.species_update_get = (req, res, next) => {
+  Species.findOne({ name: req.params.species_name })
+    .exec((err, species) => {
+      if (err) { return next(err); }
+      res.render('species_form', { title: 'Update Entry', species });
+    });
 };
 
-exports.species_update_post = (req, res) => {
-  res.send(`NOT IMPLEMENTED: Species update POST for ${ req.params.species_name }`);
-};
+exports.species_update_post = [
+  // Validate and sanitize fields
+  body('name', 'A name is required').trim().isLength({ min: 1 }).escape(),
+  body('description', 'A description is required').trim().isLength({ min: 1 }),
+
+  // Process request after validation and sanitization
+  (req, res, next) => {
+    // Extract validation errors from request
+    const errors = validationResult(req);
+
+    // Create a new Species object/doc with escaped/trimmed data
+    const species = new Species({
+      name: req.body.name,
+      description: req.body.description,
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors - re-render form with sanitized values/error messages
+      res.render('species_form', { title: 'Update Entry', species, errors: errors.array() });
+      return;
+    }
+
+    // Updated data is valid - update record
+    Species.findOneAndUpdate({ name: req.params.species_name }, {
+      name: species.name,
+      description: species.description,
+    }, (err) => {
+      if (err) { return next(err); }
+      // Successfully updated database - redirect to list of species
+      res.redirect('/inventory/species');
+    });
+  },
+];
 
 exports.species_delete_get = (req, res) => {
-  res.send(`NOT IMPLEMENTED: Species delete GET for ${ req.params.species_name }`);
+  res.render('species_delete', { species: req.params.species_name });
 };
 
-exports.species_delete_post = (req, res) => {
-  res.send(`NOT IMPLEMENTED: Species delete POST for ${ req.params.species_name }`);
+exports.species_delete_post = (req, res, next) => {
+  async.waterfall([
+    (callback) => {
+      // Fetch Species document for current Species
+      Species.findOne({ name: req.params.species_name }, (err, species) => {
+        if (err) { return next(err); }
+        callback(null, species);
+      });
+    },
+    (species, callback) => {
+      // Remove associated Animal instances
+      Animal.deleteMany({ species: species._id })
+        .exec((err) => {
+          if (err) { return next(err); }
+          callback(null, species);
+      });
+    },
+    (species, callback) => {
+      // Remove Species document
+      Species.findByIdAndRemove(species._id)
+        .exec((err) => {
+          if (err) { return next(err); }
+          callback(null, '');
+        })
+    },
+  ], (err, msg) => {
+    if (err) { return next(err); }
+    // Species and associated Animal docs removed, redirect to list of species
+    res.redirect('/inventory/species');
+  });
 };
